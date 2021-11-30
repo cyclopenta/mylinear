@@ -1,6 +1,9 @@
 ######################################################################
 # testing cases
 library(car)
+setwd('D:/zl/Umich/course/biostat625/hw4test')
+library(sas7bdat)
+mydata = read.sas7bdat("completedata.sas7bdat")
 m1 = lm(Depression ~  Fatalism + Sex + R_E + Age , data = mydata)
 m2 = lm(Depression ~  -1 + Fatalism + Sex + R_E + Age , data = mydata)
 m3 = lm(Depression ~  Fatalism + Sex + R_E + Age_4Cat + NIHSS_4Cat, data = mydata)

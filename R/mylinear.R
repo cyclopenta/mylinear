@@ -3,19 +3,27 @@
 #'fit a linear model with basic model diagnose
 #'
 #'@param dat input data frame with no NAs, should include all the data that will be used
-#'@param response name string for response
-#'@param covariates string vector of the chosen variables in the input data frame
-#'@param category specify the categorical variables by input the names vector
-#'@param cat_method choose the coding method for categorical variables, should be 'refernce' or 'cellmeans'
-#'@param ref specify the reference level for each categorical variable
-#'@param model.diag default  is True, activate the model diagnose function
-#'@param intercept default is True, make the model with an intercept
-#'@param cutoff specify the level of significance for the test
 #'
+#'@param response name string for response
+#'
+#'@param covariates string vector of the chosen variables in the input data frame
+#'
+#'@param category specify the categorical variables by input the names vector
+#'
+#'@param cat_method choose the coding method for categorical variables, should be 'refernce' or 'cellmeans'
+#'
+#'@param ref specify the reference level for each categorical variable
+#'
+#'@param model.diag default  is True, activate the model diagnose function
+#'
+#'@param intercept default is True, make the model with an intercept
+#'
+#'@param cutoff specify the level of significance for the test
 #'
 #'@return similar output as summary(lm), residuals,
 #'
 #'@examples
+#'
 #'mydata = read.sas7bdat("completedata.sas7bdat")
 #'t1 = mylm(mydata, 'Depression', covar1)
 #'t2 = mylm(mydata, 'Depression', covar1, intercept = F)
@@ -25,18 +33,6 @@
 #'
 #'@export
 #'
-
-# dat should be a dataframe
-# response is the reponse variable
-# covariates are the corvarites
-# Test part
-
-setwd('D:/zl/Umich/course/biostat625/hw4test')
-library(sas7bdat)
-# included package
-library(ggplot2)
-library(dplyr)
-mydata = read.sas7bdat("completedata.sas7bdat")
 mylm = function(dat, response, covariates,
                 category = c(), cat_method = 'reference', ref = c(),
                 model.diag = T, intercept = T, cutoff = 0.05){
@@ -221,4 +217,10 @@ model_dignose = function(Y, covariates, modeldat){
     i = i + 1
   }
 }
+
+library(ggplot2)
+library(dplyr)
+
+
+
 
