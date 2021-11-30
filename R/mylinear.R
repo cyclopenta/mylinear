@@ -10,7 +10,7 @@
 #'
 #'@param category specify the categorical variables by input the names vector
 #'
-#'@param cat_method choose the coding method for categorical variables, should be 'refernce' or 'cellmeans'
+#'@param cat_method choose the coding method for categorical variables, should be 'reference' or 'cellmeans'
 #'
 #'@param ref specify the reference level for each categorical variable
 #'
@@ -24,7 +24,6 @@
 #'
 #'@examples
 #'
-#'mydata = read.sas7bdat("completedata.sas7bdat")
 #'t1 = mylm(mydata, 'Depression', covar1)
 #'t2 = mylm(mydata, 'Depression', covar1, intercept = F)
 #'t3 = mylm(mydata, 'Depression', covar2)
@@ -138,52 +137,7 @@ mylm = function(dat, response, covariates,
   return(out_list)
 }
 
-# process category variables
-categorize = function(data, vars, method = c('reference', 'cellmeans'), ref = c()){
-  method = match.arg(method)
-  l = nrow(data)
-  CAT_dat = select(data, -c(vars))
-  if (method == 'reference'){
-    if( length(ref) < 1){
-      stop('specified the reference')
-    }
-    i = 1
-    while (i <= length(vars)){
-      cats = unique(data[[vars[i]]])
-      cats = cats[cats != ref[i]]
-      w = length(cats)
-      # initialize the reference coding matrix
-      tmp = matrix(rep(data[[vars[i]]], w), nrow =l , ncol = w)
-      colnames(tmp) = paste(vars[i], cats,sep = '.')
-      j = 1
-      while (j <= length(cats)){
-        tmp[,j] = ifelse(tmp[,j] == cats[j], 1, 0)
-        j = j + 1
-      }
-      CAT_dat = cbind(CAT_dat, tmp)
-      i = i + 1
-    }
-  }
-  # cell means coding
-  else{
-    i = 1
-    while (i <= length(vars)){
-      cats = unique(data[[vars[i]]])
-      w = length(cats)
-      # initialize the reference coding matrix
-      tmp = matrix(rep(data[[vars[i]]], w), nrow =l , ncol = w)
-      colnames(tmp) = paste(vars[i], cats,sep = '.')
-      j = 1
-      while (j <= length(cats)){
-        tmp[,j] = ifelse(tmp[,j] == cats[j], 1, 0)
-        j = j + 1
-      }
-      CAT_dat = cbind(CAT_dat, tmp)
-      i = i + 1
-    }
-  }
-  return(CAT_dat)
-}
+
 
 # model diagnose using partial plots
 model_dignose = function(Y, covariates, modeldat){

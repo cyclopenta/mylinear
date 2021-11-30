@@ -25,7 +25,7 @@ mylm(
 
 \item{category}{specify the categorical variables by input the names vector}
 
-\item{cat_method}{choose the coding method for categorical variables, should be 'refernce' or 'cellmeans'}
+\item{cat_method}{choose the coding method for categorical variables, should be 'reference' or 'cellmeans'}
 
 \item{ref}{specify the reference level for each categorical variable}
 
@@ -43,7 +43,6 @@ fit a linear model with basic model diagnose
 }
 \examples{
 
-mydata = read.sas7bdat("completedata.sas7bdat")
 t1 = mylm(mydata, 'Depression', covar1)
 t2 = mylm(mydata, 'Depression', covar1, intercept = F)
 t3 = mylm(mydata, 'Depression', covar2)
