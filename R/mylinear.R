@@ -32,7 +32,7 @@
 #'
 #'@export
 #'
-mylm = function(dat, response, covariates,
+mylm = function(dat, response, covariates,inter = c(),
                 category = c(), cat_method = 'reference', ref = c(),
                 model.diag = T, intercept = T, cutoff = 0.05){
   model_dat = subset(dat, select = c(response, covariates))
@@ -50,20 +50,41 @@ mylm = function(dat, response, covariates,
   # categorize variables
   if(length(category) >= 1 ){
     model_dat = categorize(data = tmp_dat, vars = category, method = cat_method, ref = ref)
-    covariates = colnames(model_dat)
     tmp_dat = model_dat
   }
-  beta_n = length(covariates)
+  # process the interaction term
+  inter_n = length(inter)
+  if(inter_n >= 1){
+    inter_matrix = matrix(rep(0,inter_n*obs), nrow = obs, ncol = inter_n)
+    colnames(inter_matrix) = inter
+    i = 1
+    while( i <= inter_n){
+      # parse the parameter
+      now_inter_vec = str_split(inter[i], ":")[[1]]
+      tmp_group = subset(tmp_dat, select = now_inter_vec)
+      inter_matrix[, i] =rowProds(as.matrix(tmp_group))
+      i = i + 1
+    }
+    tmp_dat = cbind(tmp_dat, inter_matrix)
+  }
+  beta_n = ncol(tmp_dat)
   X_matrix = as.matrix(tmp_dat)
+  covariates = colnames(tmp_dat)
   if (intercept){
     X_matrix = cbind(rep(1, nrow(model_dat)), X_matrix)
     beta_n = beta_n + 1
-    colnames(X_matrix) = c('intercept',covariates)
+    colnames(X_matrix) = c('intercept', covariates)
   }
   Y_matrix = as.matrix(subset(dat, select = response))
   X_T = t(X_matrix)
   # store the value of  the (t(X)X)-1 to save time
-  useful_matrix = solve((X_T %*% X_matrix))
+  pre_useful_matrix = X_T %*% X_matrix
+  flag = min(nrow(pre_useful_matrix), ncol(pre_useful_matrix))
+  if (rankMatrix(pre_useful_matrix) != flag ){
+    warning('t(X) %*% X is singular, stop the process')
+    return(c())
+  }
+  useful_matrix = solve(pre_useful_matrix)
   # calculate betas
   betas = useful_matrix %*% X_T %*% Y_matrix
   # fitting the model
@@ -149,10 +170,24 @@ model_dignose = function(Y, covariates, modeldat){
     tmp_X = select(modeldat, -c(covariates[i]))
     new_vars  = colnames(tmp_X)
     newdata = cbind(Y, tmp_X)
-    AXIS_Y = mylm(newdata, colnames(Y), new_vars, model.diag = F)[['residuals']]
+    AXIS_Y = mylm(newdata, colnames(Y), new_vars, model.diag = F)
+    if (length(AXIS_Y) !=0 ){
+      AXIS_Y = AXIS_Y[['residuals']]
+    }
+    else{
+      print('matrix is singular in diagnose process')
+      break()
+    }
     choosen = select(modeldat, c(covariates[i]))
     newdata = cbind(choosen, tmp_X)
-    AXIS_X = mylm(newdata, colnames(choosen), new_vars, model.diag = F)[['residuals']]
+    AXIS_X = mylm(newdata, colnames(choosen), new_vars, model.diag = F)
+    if (length(AXIS_X) !=0){
+      AXIS_X = AXIS_X[['residuals']]
+    }
+    else{
+      print('matrix is singular in diagnose process')
+      break()
+    }
     df_pic = data.frame(x = AXIS_X, y = AXIS_Y)
     colnames(df_pic) = c('x', 'y')
     xlab = paste(covariates[i], 'others', sep = '|')
@@ -174,7 +209,8 @@ model_dignose = function(Y, covariates, modeldat){
 
 library(ggplot2)
 library(dplyr)
-
-
+library(Matrix)
+library(matrixStats)
+library(tidyverse)
 
 

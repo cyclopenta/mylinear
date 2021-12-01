@@ -8,6 +8,7 @@ mylm(
   dat,
   response,
   covariates,
+  inter = c(),
   category = c(),
   cat_method = "reference",
   ref = c(),
