@@ -1,4 +1,1 @@
-"# qwzlinear" 
-"# qwzlinear" 
-"# qwzlinear" 
-"# qwzlinear" 
+## Basic Linear Regression 
