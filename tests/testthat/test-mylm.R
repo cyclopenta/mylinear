@@ -74,6 +74,8 @@ test_that("mylm works", {
       return(1)
     }
   }
+  na_test = mydata
+  na_test[1,'Age'] = NA
   expect_equal(mylm_test(t1,m1),1)
   expect_equal(mylm_test(t2,m2),1)
   expect_equal(mylm_test(t3,m3),1)
@@ -84,4 +86,8 @@ test_that("mylm works", {
   expect_equal(mylm_test(t8,m8),1)
   expect_equal(mylm_test(t9,m9),1)
   expect_equal(mylm_test(t10,m10),1)
+  expect_error(categorize(mydata, c('NIHSS_4Cat', 'Comorbidity1'), ref = c()))
+  expect_error(mylm(dat10[1,], 'Depression', covar1))
+  expect_error(mylm(na_test, 'Depression', covar1))
+
 })

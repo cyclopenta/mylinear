@@ -187,14 +187,19 @@ model_dignose = function(Y, covariates, modeldat){
     }
     choosen = select(modeldat, c(covariates[i]))
     newdata = cbind(choosen, tmp_X)
-    AXIS_X = mylm(newdata, colnames(choosen), new_vars, model.diag = F)
-    if (length(AXIS_X) !=0){
-      AXIS_X = AXIS_X[['residuals']]
-    }
-    else{
-      print('matrix is singular in diagnose process')
-      break()
-    }
+    AXIS_X = mylm(newdata, colnames(choosen), new_vars, model.diag = F)[['residuals']]
+
+    #####
+    # No need to double check, because x-K has been singular or not
+    #if (length(AXIS_X) !=0){
+      #AXIS_X = AXIS_X[['residuals']]
+    #}
+    #else{
+      #print('matrix is singular in diagnose process')
+      #break()
+    #}
+
+    #####
     df_pic = data.frame(x = AXIS_X, y = AXIS_Y)
     colnames(df_pic) = c('x', 'y')
     xlab = paste(covariates[i], 'others', sep = '|')
