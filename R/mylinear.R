@@ -8,6 +8,8 @@
 #'
 #'@param covariates string vector of the chosen variables in the input data frame
 #'
+#'@param inter specify the pairwise interaction in regression , e.g.:c('Age*Sex', 'Age*R_E')
+#'
 #'@param category specify the categorical variables by input the names vector
 #'
 #'@param cat_method choose the coding method for categorical variables, should be 'reference' or 'cellmeans'
@@ -20,10 +22,10 @@
 #'
 #'@param cutoff specify the level of significance for the test
 #'
-#'@return similar output as summary(lm), residuals,
+#'@return similar output table as summary(lm), residuals,R.square, R.square.adj, SSE
 #'
 #'@examples
-#'
+#'data(mydata)
 #'t1 = mylm(mydata, 'Depression', covar1)
 #'t2 = mylm(mydata, 'Depression', covar1, intercept = F)
 #'t3 = mylm(mydata, 'Depression', covar2)
@@ -60,8 +62,8 @@ mylm = function(dat, response, covariates,inter = c(),
     i = 1
     while( i <= inter_n){
       # parse the parameter
-      now_inter_vec = str_split(inter[i], ":")[[1]]
-      tmp_group = subset(tmp_dat, select = now_inter_vec)
+      new_inter_vec = str_split(inter[i], ":")[[1]]
+      tmp_group = subset(tmp_dat, select = new_inter_vec)
       inter_matrix[, i] =rowProds(as.matrix(tmp_group))
       i = i + 1
     }
@@ -94,6 +96,10 @@ mylm = function(dat, response, covariates,inter = c(),
   res_T = t(res)
   # estimating variance
   MSE = ((res_T %*% res)/(obs - beta_n))[1,1]
+  SSE = MSE * (obs - beta_n)
+  SSY =  sum((Y_matrix-mean(Y_matrix))^2)
+  R_square = 1 - SSE/SSY
+  R_adj_square = 1 - MSE/(SSY/(obs-1))
   betas_var = MSE * useful_matrix
   betas_sd = sqrt(diag(betas_var))
   # t-statistic
@@ -102,7 +108,8 @@ mylm = function(dat, response, covariates,inter = c(),
   ifsign = ifelse(p_val <= cutoff, ifelse(p_val <= 0.01, ifelse(p_val<=0.001, '***', '**'),'*'), '-')
   results = data.frame(coef = c(betas), std. = betas_sd, t.val = t_stats,
                        p.val = p_val, significant = ifsign)
-  out_list =  list(results = results, residuals = res)
+  out_list =  list(results = results, residuals = res, R.square = R_square,
+                   R.square.adj = R_adj_square, SSE = SSE)
   if (model.diag == T){
     # Linearity dignose
     # consider the SLR scenario

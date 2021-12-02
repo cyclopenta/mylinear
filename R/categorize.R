@@ -14,7 +14,7 @@
 #'@return data frame with all the category variables transformed to numerous dummy variables.
 #'
 #'@examples
-#'
+#'data(mydata)
 #'categorize(mydata, c('R_E', 'NIHSS_4Cat'), ref = c(0,1))
 #'categorize(mydata, c('R_E', 'NIHSS_4Cat'), method = 'cellmeans') = F)
 #'

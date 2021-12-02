@@ -25,7 +25,7 @@ in this function. The main usage for this function is usesd internally in mylm f
 also use this to create categorical variables as well.
 }
 \examples{
-
+data(mydata)
 categorize(mydata, c('R_E', 'NIHSS_4Cat'), ref = c(0,1))
 categorize(mydata, c('R_E', 'NIHSS_4Cat'), method = 'cellmeans') = F)
 

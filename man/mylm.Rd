@@ -24,6 +24,8 @@ mylm(
 
 \item{covariates}{string vector of the chosen variables in the input data frame}
 
+\item{inter}{specify the pairwise interaction in regression , e.g.:c('Age*Sex', 'Age*R_E')}
+
 \item{category}{specify the categorical variables by input the names vector}
 
 \item{cat_method}{choose the coding method for categorical variables, should be 'reference' or 'cellmeans'}
@@ -37,13 +39,13 @@ mylm(
 \item{cutoff}{specify the level of significance for the test}
 }
 \value{
-similar output as summary(lm), residuals,
+similar output table as summary(lm), residuals,R.square, R.square.adj, SSE
 }
 \description{
 fit a linear model with basic model diagnose
 }
 \examples{
-
+data(mydata)
 t1 = mylm(mydata, 'Depression', covar1)
 t2 = mylm(mydata, 'Depression', covar1, intercept = F)
 t3 = mylm(mydata, 'Depression', covar2)
