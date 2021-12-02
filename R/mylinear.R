@@ -214,10 +214,5 @@ model_dignose = function(Y, covariates, modeldat){
   }
 }
 
-library(ggplot2)
-library(dplyr)
-library(Matrix)
-library(matrixStats)
-library(tidyverse)
 
 
