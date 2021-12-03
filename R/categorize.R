@@ -13,13 +13,19 @@
 #'@param refs specify the reference level for each categorical variable
 #'@return data frame with all the category variables transformed to numerous dummy variables.
 #'
+#'@import dplyr
+#'@import Matrix
+#'@import matrixStats
+#'@import tidyverse
+#'
 #'@examples
 #'data(mydata)
 #'categorize(mydata, c('R_E', 'NIHSS_4Cat'), ref = c(0,1))
-#'categorize(mydata, c('R_E', 'NIHSS_4Cat'), method = 'cellmeans') = F)
+#'categorize(mydata, c('R_E', 'NIHSS_4Cat'), method = 'cellmeans')
 #'
 #'@export
 #'
+
 categorize = function(data, vars, method = c('reference', 'cellmeans'), ref = c()){
   method = match.arg(method)
   l = nrow(data)

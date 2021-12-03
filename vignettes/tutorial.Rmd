@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 This package integrates the basic elements in the linear regression based on BIOSTAT650. The main function *mylm* will return a list of 5 items, They are:  
 *results*: dataframe, with similar format with summary(lm)  
 *residuals*: The residuals of the model
-*R.
+*R.square*: The R^2 which demonstrate the percentage of variance in Y explained by the model
   out_list =  list(results = results, residuals = res, R.square = R_square,
                    R.square.adj = R_adj_square, SSE = SSE)
 
