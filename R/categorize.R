@@ -15,7 +15,6 @@
 #'
 #'@examples
 #'data(mydata)
-#'library(qwzLinear)
 #'categorize(mydata, c('R_E', 'NIHSS_4Cat'), ref = c(0,1))
 #'categorize(mydata, c('R_E', 'NIHSS_4Cat'), method = 'cellmeans') = F)
 #'
