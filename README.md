@@ -15,7 +15,7 @@ This package integrates the basic elements in the linear regression based on BIO
   
 **R.square**: The R^2 which demonstrate the percentage of variance in Y explained by the model  
   
-**R.square.adj.**: The adjusted of R^2  
+**R.square.adj**: The adjusted of R^2  
   
 **SSE**: The sum of square errors in the model  
   

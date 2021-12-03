@@ -155,7 +155,7 @@ mylm = function(dat, response, covariates,inter = c(),
     colnames(df_pic) = c('x', 'y')
     xlab = 'Fitted values'
     ylab = 'residuals'
-    title = "Plot for Constant Variance Test"
+    title = "Plot for Constant Variance"
     tmp_p2 = ggplot(df_pic, aes(x = x, y = y)) +
       geom_point(shape = 5) +
       labs(x=xlab,y=ylab,title=title)+
