@@ -204,7 +204,8 @@ car::residualPlots(m1)
 t1 = mylm(mydata, 'Depression', covar1)
 ```
   
-More Examples of same patterns
+**More Examples of same patterns**  
+  
 ```{r}
 # SLR only need residuals plot
 car::residualPlots(m6)
@@ -217,7 +218,7 @@ car::residualPlots(m4)
 t4 = mylm(mydata, 'Depression', covar2, category = c('Age_4Cat', 'NIHSS_4Cat'), ref = c(1,1))
 ```
   
-**4.Benchmark**
+**4.Benchmark**  
 Because the benchmark function require the identical output for each function, I make some modifications for comparsion. However, basically my efficiency is lower than the lm function.
 ```{r}
 lm_and_car = function(form){
