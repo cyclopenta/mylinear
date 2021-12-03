@@ -19,7 +19,9 @@ This package integrates the basic elements in the linear regression based on BIO
   
 **SSE**: The sum of square errors in the model  
   
-Also, the function will automatically plot the **partial regression plots** for MLR and residual plot for SLR to test **"linearity"** assumption. Residuals v.s. Y_fit is also generated to test **"constant variance assumption"**  
+Also, the function will automatically plot the **partial regression plots** for MLR and residual plot for SLR to test **"linearity"** assumption. Residuals v.s. Y_fit is also generated to test **"constant variance" assumption**  
+  
+Help pages are available for "mylm" amd "categorize"  
   
 The example dataset named with "mydata" was generated from the reference below:  
   

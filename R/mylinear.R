@@ -138,7 +138,7 @@ mylm = function(dat, response, covariates,inter = c(),
         labs(x=xlab,y=ylab,title=title)+
         theme_bw()+
         theme(
-          plot.title = element_text(size = 18,face = "bold", vjust = 0.5, hjust = 0.5),
+          plot.title = element_text(size = 14,face = "bold", vjust = 0.5, hjust = 0.5),
           axis.title.x = element_text(size = 10,face = "bold"),
           axis.title.y = element_text(size = 10,face = "bold"),
           axis.text.x=element_text(size = 10,face = "bold"),
@@ -161,7 +161,7 @@ mylm = function(dat, response, covariates,inter = c(),
       labs(x=xlab,y=ylab,title=title)+
       theme_bw()+
       theme(
-        plot.title = element_text(size = 18,face = "bold", vjust = 0.5, hjust = 0.5),
+        plot.title = element_text(size = 14,face = "bold", vjust = 0.5, hjust = 0.5),
         axis.title.x = element_text(size = 10,face = "bold"),
         axis.title.y = element_text(size = 10,face = "bold"),
         axis.text.x=element_text(size = 10,face = "bold"),
@@ -215,7 +215,7 @@ model_dignose = function(Y, covariates, modeldat){
       labs(x=xlab,y=ylab,title=title)+
       theme_bw()+
       theme(
-        plot.title = element_text(size = 18,face = "bold", vjust = 0.5, hjust = 0.5),
+        plot.title = element_text(size = 14,face = "bold", vjust = 0.5, hjust = 0.5),
         axis.title.x = element_text(size = 10,face = "bold"),
         axis.title.y = element_text(size = 10,face = "bold"),
         axis.text.x=element_text(size = 10,face = "bold"),
