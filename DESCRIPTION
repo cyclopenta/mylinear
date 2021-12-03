@@ -12,11 +12,11 @@ RoxygenNote: 7.1.1
 Depends: 
     R (>= 2.10)
 imports:
-    dplyr
-    ggplot2
-    Matrix
-    matrixStats
-    tidyverse
+    dplyr,
+    ggplot2,
+    Matrix,
+    matrixStats,
+    tidyverse,
     stringr
 Suggests: 
     rmarkdown,
