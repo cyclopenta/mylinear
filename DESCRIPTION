@@ -14,13 +14,16 @@ Depends:
     dplyr,
     ggplot2,
     Matrix,
-    tidyverse
+    tidyverse,
 Imports:
     matrixStats,
-    stringr
+    stringr,
+    car
 Suggests: 
     rmarkdown,
     knitr,
-    testthat (>= 3.0.0)
-VignetteBuilder: knitr
+    testthat (>= 3.0.0),
+    ggbeeswarm,
+    bench
+VignetteBuilder: knitr, ggbeeswarm, bench, car
 Config/testthat/edition: 3

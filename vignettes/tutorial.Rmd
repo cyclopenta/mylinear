@@ -46,7 +46,7 @@ dim(mydata)
 ```
   
 **2.Basic MLR with/without model diagnose**  
-```{r}
+```{r warning=FALSE}
 covar1 = c('Fatalism', 'Sex', 'R_E', 'Age')
 t1 = mylm(mydata, 'Depression', covar1)
 # check the result table 
@@ -70,7 +70,7 @@ head(tmp[,52:56])
 ```{r}
 covar2 = c('Fatalism', 'Sex', 'R_E', 'Age_4Cat', 'NIHSS_4Cat')
 covar3 = c('Fatalism', 'Sex', 'R_E', 'Age_4Cat')
-t4 = mylm(mydata, 'Depression', covar2, category = c('Age_4Cat', 'NIHSS_4Cat'), ref = c(1,1))
+t4 = mylm(mydata, 'Depression', covar2, category = c('Age_4Cat', 'NIHSS_4Cat'), ref = c(1,1), model.diag = FALSE)
 t5 = mylm(mydata, 'Depression', covar3, category = c('Age_4Cat'), cat_method = 'cellmeans', intercept = F, model.diag = F)
 ```
 ```{r}
@@ -96,13 +96,146 @@ t9 = mylm(dat9, 'Depression', covar5, inter = c('Age:Sex','Age:Fatalism','HiChol
 t9$results
 ```
   
+**7.SLR also works**  
+```{r}
+covar4 = c('Fatalism')
+t6 = mylm(mydata, 'Depression', covar4)
+t7 = mylm(mydata, 'Depression', covar4, intercept = F,model.diag = FALSE)
+t6$results
+t7$results
+```
+
 **NOTE**  
-High order interaction like 3-way interaction is not recommended dut to the hardness of interpretation. The algorithm estimating this kind of case is also out the range of BIOSTAT650.  
+High order interaction like 3-way interaction is not recommended dut to the hardness of interpretation. The algorithm estimating this kind of cases are also out the range of BIOSTAT650. And the transformation term could be realized by adding transformed values in the column.
 
 ## Comparsion and Correctness
   
 **1.Correctness**
-Correctness is confirmed by passing all the unit tests. The tests are based on the comparing the results to lm() and anova(). Examples are shown below to show the Correctness.  
+Correctness is confirmed by passing all the unit tests. The tests are based on the comparing the results to lm() and anova(). Basic examples are shown below to show the Correctness.  
 ```{r}
-
+m1 = lm(Depression ~  Fatalism + Sex + R_E + Age , data = mydata)
+summary(m1)
+anova(m1)
+t1$results
 ```
+**2.Batch comparisons**
+```{r}
+# function used to compare the output to the lm() function, if the results are same
+# the output of function will be 1
+# The criteria of having same results is the errors between my function and lm and anova
+# less than 1e-6
+mylm_test = function(my, R_out){
+    my_p = nrow(my)
+    r_summy = summary(R_out)
+    r_SSE = anova(R_out)[['Sum Sq']]
+    r_sse_index = length(r_SSE)
+    r_SSE = r_SSE[r_sse_index]
+    # use sum to aviod different oders after categorizaion
+    if (sum(abs(my$results[['coef']]))-sum(abs(R_out$coefficients)) > 1e-6){
+      return(0)
+    }
+    # then check std.
+    else if (sum(my$results[['std.']])-sum(r_summy$coefficients[,2]) > 1e-6){
+      return(0)
+    }
+    # then check t-stats
+    else if (sum(abs(my$results[['t.val']]))-sum(abs(r_summy$coefficients[,3])) > 1e-6){
+      return(0)
+    }
+    # then check p-val
+    else if (sum(my$results[['p.val']])-sum(r_summy$coefficients[,4]) > 1e-6){
+      return(0)
+    }
+    # then check R square
+    else if ((my$R.square - r_summy$r.squared > 1e-6) || (my$R.square.adj - r_summy$adj.r.squared > 1e-6)){
+      return(0)
+    }
+    # then check residuals
+    else if (any(abs(my[['residuals']]-r_summy$residuals) > 1e-6)){
+      return(0)
+    }
+    # then check SSE
+    else if (abs(my[['SSE']]-r_SSE <= 1e-6)){
+      return(1)
+    }
+}
+covar5 = c('NIHSS_4Cat.2', 'NIHSS_4Cat.4', 'NIHSS_4Cat.3', 'Comorbidity1.4', 'Comorbidity1.3', 'Comorbidity1.6', 'Comorbidity1.5',
+              'Comorbidity1.2', 'Comorbidity1.1', 'Comorbidity1.7',
+             'Fatalism', 'Sex', 'R_E', 'Age', 'Optimism','HiChol')
+covar6 = c('NIHSS_4Cat.1','NIHSS_4Cat.2', 'NIHSS_4Cat.4', 'NIHSS_4Cat.3', 'Comorbidity1.4', 'Comorbidity1.3', 'Comorbidity1.6',
+             'Comorbidity1.5','Comorbidity1.2', 'Comorbidity1.1', 'Comorbidity1.7',
+             'Fatalism', 'Sex', 'R_E', 'Age', 'Optimism','HiChol')
+t3 = mylm(mydata, 'Depression', covar2, model.diag = FALSE)
+t9 = mylm(dat9, 'Depression', covar5, 
+          inter = c('Age:Sex','Age:Fatalism','HiChol:Fatalism'),
+          model.diag = FALSE)
+dat10 = categorize(mydata, c('NIHSS_4Cat', 'Comorbidity1'), method = 'cellmeans')
+t10 = mylm(dat10, 'Depression', covar6, inter = 
+             c('Age:Sex','Age:Fatalism','HiChol:Fatalism'), intercept = F,
+                model.diag = FALSE)
+
+m1 = lm(Depression ~  Fatalism + Sex + R_E + Age , data = mydata)
+m2 = lm(Depression ~  -1 + Fatalism + Sex + R_E + Age , data = mydata)
+m3 = lm(Depression ~  Fatalism + Sex + R_E + Age_4Cat + NIHSS_4Cat, data = mydata)
+m4 = lm(Depression ~  Fatalism + Sex + R_E + factor(Age_4Cat) + factor(NIHSS_4Cat), data = mydata)
+m5 = lm(Depression ~  -1 + Fatalism + Sex + R_E + factor(Age_4Cat) , data = mydata)
+m6 = lm(Depression ~ Fatalism, data = mydata)
+m7 = lm(Depression ~ -1 + Fatalism, data = mydata)
+m8 = lm(Depression ~  Fatalism + Sex + R_E + Age + Age*Sex + Age*Fatalism, data = mydata)
+m9 = lm(Depression ~  Fatalism + Sex + R_E + Age + factor(NIHSS_4Cat) + factor(Comorbidity1) +
+        Optimism + HiChol + Age*Sex + Age*Fatalism + HiChol * Fatalism, data = mydata)
+# lm will only cell mean coding the first factor
+m10 = lm(Depression ~  -1 + Fatalism + Sex + R_E + Age + factor(NIHSS_4Cat) + factor(Comorbidity1) +
+           Optimism + HiChol + Age*Sex + Age*Fatalism + HiChol * Fatalism, data = mydata)
+compare_vec = c(mylm_test(t1,m1), mylm_test(t2,m2), mylm_test(t3,m3), mylm_test(t4,m4),
+                mylm_test(t5,m5), mylm_test(t6,m6), mylm_test(t7,m7), mylm_test(t8,m8),
+                mylm_test(t9,m9), mylm_test(t10,m10))
+print(compare_vec)
+```
+**3.Model Diagnose comparison**
+```{r}
+# residual plots from car package
+car::avPlots(m1)
+car::residualPlots(m1)
+```
+  
+```{r}
+# The patterns are the same
+t1 = mylm(mydata, 'Depression', covar1)
+```
+  
+More Examples of same patterns
+```{r}
+# SLR only need residuals plot
+car::residualPlots(m6)
+t6 = mylm(mydata, 'Depression', covar4)
+```
+  
+```{r message=FALSE, warning=FALSE}
+car::avPlots(m4)
+car::residualPlots(m4)
+t4 = mylm(mydata, 'Depression', covar2, category = c('Age_4Cat', 'NIHSS_4Cat'), ref = c(1,1))
+```
+  
+**4.Benchmark**
+Because the benchmark function require the identical output for each function, I make some modifications for comparsion. However, basically my efficiency is lower than the lm function.
+```{r}
+lm_and_car = function(form){
+  mx = lm(formula = form, data = mydata)
+  return(as.numeric(mx$coefficients))
+}
+bench1 = bench::mark(mylm(mydata, 'Depression', covar1, model.diag = FALSE)$results[['coef']],lm_and_car(Depression ~ Fatalism + Sex + R_E + Age))
+bench1$expression[[1]] = 'mylm'
+bench1$expression[[2]] = 'lm'
+plot(bench1)
+bench2 = bench::mark(sum(mylm(dat9, 'Depression', covar5, 
+          inter = c('Age:Sex','Age:Fatalism','HiChol:Fatalism'),
+          model.diag = FALSE)$results[['coef']]),
+                     sum(lm_and_car(Depression ~ Fatalism + Sex + R_E + Age + factor(NIHSS_4Cat) + 
+                                factor(Comorbidity1) + Optimism + HiChol + Age * Sex + Age * 
+                                Fatalism + HiChol * Fatalism)))
+bench2$expression[[1]] = 'mylm'
+bench2$expression[[2]] = 'lm'
+plot(bench2)
+```
+

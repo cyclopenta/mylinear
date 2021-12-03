@@ -118,7 +118,7 @@ mylm = function(dat, response, covariates,inter = c(),
   out_list =  list(results = results, residuals = res, R.square = R_square,
                    R.square.adj = R_adj_square, SSE = SSE)
   if (model.diag == T){
-    # Linearity dignose
+    # Linearity diagnose
     # consider the SLR scenario
     if(beta_n <= 2){
       AXIS_Y = res
