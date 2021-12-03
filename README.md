@@ -21,10 +21,15 @@ This package integrates the basic elements in the linear regression based on BIO
   
 Also, the function will automatically plot the **partial regression plots** for MLR and residual plot for SLR to test **"linearity"** assumption. Residuals v.s. Y_fit is also generated to test **"constant variance" assumption**  
   
-**Help pages are available for "mylm" amd "categorize"**  
+**Help pages are available for "mylm" and "categorize", using help(mylm) and help(categorize) to check**  
   
 The example dataset named with "mydata" was generated from the reference below:  
   
-**Morgenstern, Lewis B., et al. "Fatalism, optimism, spirituality, depressive symptoms, and stroke outcome: a population-based analysis." Stroke 42.12 (2011): 3518-3523.**  
-
+Morgenstern, Lewis B., et al. "Fatalism, optimism, spirituality, depressive symptoms, and stroke outcome: a population-based analysis." Stroke 42.12 (2011): 3518-3523.  
+  
+**To install this package:**  
+```
+devtools::install_github("cyclopenta/mylinear", build_vignettes = TRUE)
+```
+  
 The further tutorial is in the /vignettes.
