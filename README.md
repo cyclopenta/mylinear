@@ -32,4 +32,7 @@ Morgenstern, Lewis B., et al. "Fatalism, optimism, spirituality, depressive symp
 devtools::install_github("cyclopenta/mylinear", build_vignettes = TRUE)
 ```
   
-The further tutorial is in the /vignettes.
+The further tutorial could be viewed by 
+```
+browseVignettes("qwzLinear")
+```
