@@ -18,12 +18,17 @@ Depends:
 Imports:
     matrixStats,
     stringr,
-    car
+    car,
+    knitr,
+    ggbeeswarm, 
+    bench,
+    rmarkdown
 Suggests: 
     rmarkdown,
     knitr,
     testthat (>= 3.0.0),
     ggbeeswarm,
-    bench
+    bench,
+    car
 VignetteBuilder: knitr, ggbeeswarm, bench, car
 Config/testthat/edition: 3
