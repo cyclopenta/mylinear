@@ -14,7 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 ## Introdction  
-This package integrates the basic elements in the linear regression based on BIOSTAT650. The main function *mylm* will retrun 
+This package integrates the basic elements in the linear regression based on BIOSTAT650. The main function *mylm* will retrun a list of 5 items, They are:
+
 ```{r setup}
 library(qwzLinear)
 
