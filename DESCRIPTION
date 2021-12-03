@@ -1,6 +1,6 @@
 Package: qwzLinear
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Linear Regression for BIOSTAT625 based on BIOSTAT650
 Version: 0.1.0
 Author: Cyclopenta
 Maintainer: The package maintainer <yourself@somewhere.net>
@@ -14,10 +14,10 @@ Depends:
     dplyr,
     ggplot2,
     Matrix,
+    tidyverse
+Imports:
     matrixStats,
-    tidyverse,
     stringr
-imports:
 Suggests: 
     rmarkdown,
     knitr,

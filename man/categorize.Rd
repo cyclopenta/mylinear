@@ -13,7 +13,7 @@ categorize(data, vars, method = c("reference", "cellmeans"), ref = c())
 
 \item{method}{specify the method for categorization}
 
-\item{refs}{specify the reference level for each categorical variable}
+\item{ref}{specify the reference level for each categorical variable}
 }
 \value{
 data frame with all the category variables transformed to numerous dummy variables.

@@ -49,6 +49,7 @@ data(mydata)
 covar2 = c('Fatalism', 'Sex', 'R_E', 'Age_4Cat', 'NIHSS_4Cat')
 covar3 = c('Fatalism', 'Sex', 'R_E', 'Age_4Cat')
 t4 = mylm(mydata, 'Depression', covar2, category = c('Age_4Cat', 'NIHSS_4Cat'), ref = c(1,1))
-t5 = mylm(mydata, 'Depression', covar3, category = c('Age_4Cat'), cat_method = 'cellmeans', intercept = FALSE)
+t5 = mylm(mydata, 'Depression', covar3, category = c('Age_4Cat'),
+cat_method = 'cellmeans', intercept = FALSE)
 
 }

@@ -10,12 +10,11 @@
 #'@param vars name vector for the category variables
 #'
 #'@param method specify the method for categorization
-#'@param refs specify the reference level for each categorical variable
+#'@param ref specify the reference level for each categorical variable
 #'@return data frame with all the category variables transformed to numerous dummy variables.
 #'
 #'@import dplyr
 #'@import Matrix
-#'@import matrixStats
 #'@import tidyverse
 #'
 #'@examples
